@@ -20,6 +20,6 @@
 
 <!--        &lt;!&ndash;TODO: na potem - dopisanie klas obsługiwanych przez hibernate &ndash;&gt;-->
         <mapping class="ReminderProject.model.Employee"/>
-        <mapping class="ReminderProject.model.ReminderEployee"/>
+        <mapping class="ReminderProject.model.ReminderEmployee"/>
     </session-factory>
 </hibernate-configuration>

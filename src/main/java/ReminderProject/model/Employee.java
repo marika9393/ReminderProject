@@ -28,10 +28,17 @@ public class Employee {
 
     @OneToMany (mappedBy = "employee", fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
-    private List<ReminderEployee> reminderEmployee;
+    private List<ReminderEmployee> reminderEmployee;
 
     public Employee(String firstName, String surname) {
         this.firstName = firstName;
         this.surname = surname;
+    }
+
+    public Employee(String firstName, String surname, TypeOfContract typeOfContract, LocalDate finishContract) {
+        this.firstName = firstName;
+        this.surname = surname;
+        this.typeOfContract = typeOfContract;
+        this.finishContract = finishContract;
     }
 }

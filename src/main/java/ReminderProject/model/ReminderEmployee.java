@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReminderEployee {
+public class ReminderEmployee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +26,6 @@ public class ReminderEployee {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Employee employee;
+
+
 }

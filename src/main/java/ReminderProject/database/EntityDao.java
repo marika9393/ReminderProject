@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class EntityDao<T> {
+
+
     public void saveOrUpdate(T entity) {
         SessionFactory sessionFactory = HibernateUtil.getOurSessionFactory();
         Transaction transaction = null;
