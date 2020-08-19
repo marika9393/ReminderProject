@@ -3,6 +3,7 @@ package reminderProject;
 import reminderProject.database.EntityDao;
 import reminderProject.database.HibernateUtil;
 import reminderProject.model.Employee;
+import reminderProject.model.TypeOfContract;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -31,8 +32,6 @@ public class Main {
             String[] words = employeeCommand.split(" ");
 
 
-            employeeCommand = scanner.nextLine();
-
             if(words[0].equalsIgnoreCase("employee") && words[1].equalsIgnoreCase("add")) {
                 addEmployee(words);
             } else if (words[0].equalsIgnoreCase("employee") && words[1].equalsIgnoreCase("show")) {
@@ -44,11 +43,6 @@ public class Main {
                 deleteEmployee(words);
             }
         } while (!employeeCommand.equalsIgnoreCase("quit"));
-
-//        Employee firstEmployee = new Employee("Mariolka", "Blask");
-//
-//        EntityDao<Employee> employeeEntityDao = new EntityDao<>();
-//        employeeEntityDao.saveOrUpdate(firstEmployee);
     }
 
     private static void deleteEmployee(String[] words) {
@@ -83,29 +77,30 @@ public class Main {
                 "2 - umowa o pracę na czas określony \n" +
                 "3 - umowa o pracę na czas nieokreślony \n ");
         int contract = scanner.nextInt();
-        Employee.TypeOfContract typeOfContract;
+        TypeOfContract typeOfContract;
         switch (contract) {
             case 1:
-                typeOfContract = Employee.TypeOfContract.UMOWA_O_PRACE_OKRES_PROBNY;
+                typeOfContract = TypeOfContract.UMOWA_O_PRACE_OKRES_PROBNY;
                 break;
             case 2:
-                typeOfContract = Employee.TypeOfContract.UMOWA_O_PRACE_NA_CZAS_OKRESLONY;
+                typeOfContract = TypeOfContract.UMOWA_O_PRACE_NA_CZAS_OKRESLONY;
                 break;
             case 3:
-                typeOfContract = Employee.TypeOfContract.UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY;
+                typeOfContract = TypeOfContract.UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY;
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + contract);
         }
 
         System.out.println("Write date of finish the contract");
+        scanner.nextLine();
 
-        System.out.println("Write year");
-        int year = scanner.nextInt();
-        System.out.println("Write month");
-        int month = scanner.nextInt();
-        System.out.println("Write day");
-        int day = scanner.nextInt();
+            System.out.println("Write year");
+            int year = scanner.nextInt();
+            System.out.println("Write month");
+            int month = scanner.nextInt();
+            System.out.println("Write day");
+            int day = scanner.nextInt();
 
         Employee employee = new Employee(firstName, surname, typeOfContract, LocalDate.of(year, month, day));
         employeeEntityDao.saveOrUpdate(employee);

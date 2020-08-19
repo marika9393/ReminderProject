@@ -23,7 +23,7 @@ public class Employee {
     private String firstName;
     private String surname;
 
-    @Enumerated(value = EnumType.STRING)
+//    @Enumerated(value = EnumType.STRING)
     private TypeOfContract typeOfContract;
     private LocalDate finishContract;
 
@@ -43,14 +43,14 @@ public class Employee {
         this.typeOfContract = typeOfContract;
         this.finishContract = finishContract;
     }
-
-    public enum TypeOfContract {
-        UMOWA_O_PRACE_OKRES_PROBNY(1),
-        UMOWA_O_PRACE_NA_CZAS_OKRESLONY(2),
-        UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY(3);
-
-        TypeOfContract(int i) {
-        }
-    }
+//
+//    public enum TypeOfContract {
+//        UMOWA_O_PRACE_OKRES_PROBNY(1),
+//        UMOWA_O_PRACE_NA_CZAS_OKRESLONY(2),
+//        UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY(3);
+//
+//        TypeOfContract(int i) {
+//        }
+//    }
 }
 
