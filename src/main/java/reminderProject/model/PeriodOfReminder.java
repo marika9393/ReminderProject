@@ -1,4 +1,4 @@
-package ReminderProject.model;
+package reminderProject.model;
 
 public enum PeriodOfReminder {
     YEAR,

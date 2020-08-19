@@ -1,4 +1,4 @@
-package ReminderProject.database;
+package reminderProject.database;
 
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;

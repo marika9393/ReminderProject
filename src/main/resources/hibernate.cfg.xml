@@ -5,7 +5,7 @@
 <hibernate-configuration>
     <session-factory>
         <property name="connection.url">
-            jdbc:mysql://localhost:3306/ReminderProject?serverTimezone=Europe/Warsaw&amp;createDatabaseIfNotExist=true
+            jdbc:mysql://localhost:3306/reminderProject?serverTimezone=Europe/Warsaw&amp;createDatabaseIfNotExist=true
         </property>
 
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
@@ -19,7 +19,7 @@
         <property name="show_sql">true</property>
 
 <!--        &lt;!&ndash;TODO: na potem - dopisanie klas obsługiwanych przez hibernate &ndash;&gt;-->
-        <mapping class="ReminderProject.model.Employee"/>
-        <mapping class="ReminderProject.model.ReminderEmployee"/>
+        <mapping class="reminderProject.model.Employee"/>
+        <mapping class="reminderProject.model.ReminderEmployee"/>
     </session-factory>
 </hibernate-configuration>
