@@ -28,5 +28,10 @@ public class ReminderEmployee {
     @EqualsAndHashCode.Exclude
     private Employee employee;
 
-
+    public ReminderEmployee(TypeOfReminder typeOfReminder, int amount, LocalDate dateOfReminder, PeriodOfReminder periodOfReminder) {
+        this.typeOfReminder = typeOfReminder;
+        this.amount = amount;
+        this.dateOfReminder = dateOfReminder;
+        this.periodOfReminder = periodOfReminder;
+    }
 }

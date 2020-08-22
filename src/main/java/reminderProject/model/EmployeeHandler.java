@@ -13,7 +13,14 @@ public class EmployeeHandler {
     private Scanner scanner = new Scanner(System.in);
     private EmployeeDao employeeDao = new EmployeeDao();
 
-    public void handle(String[] words) {
+    public void handleEmployee(String[] words) {
+
+        System.out.println("Employee List : ");
+        System.out.println("Employee add : {name} {surname} {type of contract} {finish contract}");
+        System.out.println("Employee findby: {id} {name} {surname} {type of contract} {finish contract}");
+        System.out.println("Employee Delete");
+
+
         if (words[1].equalsIgnoreCase("list")) {
             showEmployees();
         } else if (words[1].equalsIgnoreCase("add")) {
@@ -23,8 +30,8 @@ public class EmployeeHandler {
             System.out.println("id employee \n" +
                     "firstname \n" +
                     "surname \n" +
-                    "type of contract \n" +
-                    "finish contract \n");
+                    "contract \n" +
+                    "termination \n");
             String command = scanner.nextLine();
 
             if (command.equalsIgnoreCase("id")) {
@@ -44,64 +51,6 @@ public class EmployeeHandler {
         }
     }
 
-    private void addEmployee() {
-        EntityDao<Employee> employeeEntityDao = new EntityDao<>();
-
-        System.out.println("Write firstname");
-        String firstName = scanner.nextLine();
-
-        System.out.println("Write surname");
-        String surname = scanner.nextLine();
-
-        System.out.println("Choose type of contract: \n" +
-                "1 - umowa o pracę na okres próbny \n" +
-                "2 - umowa o pracę na czas określony \n" +
-                "3 - umowa o pracę na czas nieokreślony \n ");
-        int contract = Integer.parseInt(scanner.nextLine());
-        TypeOfContract typeOfContract;
-        switch (contract) {
-            case 1:
-                typeOfContract = TypeOfContract.UMOWA_O_PRACE_OKRES_PROBNY;
-                break;
-            case 2:
-                typeOfContract = TypeOfContract.UMOWA_O_PRACE_NA_CZAS_OKRESLONY;
-                break;
-            case 3:
-                typeOfContract = TypeOfContract.UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + contract);
-        }
-
-        System.out.println("Write date of finish the contract");
-        scanner.nextLine();
-
-        Employee employee;
-
-        if(typeOfContract != TypeOfContract.UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY) {
-            System.out.println("Write year");
-            int year = Integer.parseInt(scanner.nextLine());
-            System.out.println("Write month");
-            int month = Integer.parseInt(scanner.nextLine());
-            System.out.println("Write day");
-            int day = Integer.parseInt(scanner.nextLine());
-            employee = new Employee(firstName, surname, typeOfContract, LocalDate.of(year, month, day));
-        }else{
-            employee = new Employee(firstName, surname, typeOfContract, null);
-        }
-
-        employeeEntityDao.saveOrUpdate(employee);
-    }
-
-
-    private static void showEmployees() {
-        EntityDao<Employee> employeeEntityDao = new EntityDao<>();
-        employeeEntityDao
-                .findAll(Employee.class)
-                .stream()
-                .forEach(System.out::println);
-
-    }
 
 
     private static void deleteEmployee() {
@@ -201,5 +150,66 @@ public class EmployeeHandler {
             System.out.println("Found employee: " + resultEmployeeOptional.get());
         } else
             System.out.println("Employee not found");
+    }
+
+
+
+    private void addEmployee() {
+        EntityDao<Employee> employeeEntityDao = new EntityDao<>();
+
+        System.out.println("Write firstname");
+        String firstName = scanner.nextLine();
+
+        System.out.println("Write surname");
+        String surname = scanner.nextLine();
+
+        System.out.println("Choose type of contract: \n" +
+                "1 - umowa o pracę na okres próbny \n" +
+                "2 - umowa o pracę na czas określony \n" +
+                "3 - umowa o pracę na czas nieokreślony \n ");
+        int contract = Integer.parseInt(scanner.nextLine());
+        TypeOfContract typeOfContract;
+        switch (contract) {
+            case 1:
+                typeOfContract = TypeOfContract.UMOWA_O_PRACE_OKRES_PROBNY;
+                break;
+            case 2:
+                typeOfContract = TypeOfContract.UMOWA_O_PRACE_NA_CZAS_OKRESLONY;
+                break;
+            case 3:
+                typeOfContract = TypeOfContract.UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + contract);
+        }
+
+        System.out.println("Write date of finish the contract");
+        scanner.nextLine();
+
+        Employee employee;
+
+        if(typeOfContract != TypeOfContract.UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY) {
+            System.out.println("Write year");
+            int year = Integer.parseInt(scanner.nextLine());
+            System.out.println("Write month");
+            int month = Integer.parseInt(scanner.nextLine());
+            System.out.println("Write day");
+            int day = Integer.parseInt(scanner.nextLine());
+            employee = new Employee(firstName, surname, typeOfContract, LocalDate.of(year, month, day));
+        }else{
+            employee = new Employee(firstName, surname, typeOfContract, null);
+        }
+
+        employeeEntityDao.saveOrUpdate(employee);
+    }
+
+
+    private static void showEmployees() {
+        EntityDao<Employee> employeeEntityDao = new EntityDao<>();
+        employeeEntityDao
+                .findAll(Employee.class)
+                .stream()
+                .forEach(System.out::println);
+
     }
 }
