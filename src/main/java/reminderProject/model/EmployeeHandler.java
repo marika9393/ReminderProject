@@ -15,12 +15,6 @@ public class EmployeeHandler {
 
     public void handleEmployee(String[] words) {
 
-        System.out.println("Employee List : ");
-        System.out.println("Employee add : {name} {surname} {type of contract} {finish contract}");
-        System.out.println("Employee findby: {id} {name} {surname} {type of contract} {finish contract}");
-        System.out.println("Employee Delete");
-
-
         if (words[1].equalsIgnoreCase("list")) {
             showEmployees();
         } else if (words[1].equalsIgnoreCase("add")) {

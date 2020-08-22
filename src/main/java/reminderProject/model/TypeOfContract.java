@@ -10,6 +10,7 @@ public enum TypeOfContract {
     private String skroconaNazwa;
 
     TypeOfContract(String skroconaNazwa) {
+
         this.skroconaNazwa = skroconaNazwa;
     }
     public static TypeOfContract valueOfShort(String skroconaNazwa){

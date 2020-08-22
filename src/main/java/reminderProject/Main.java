@@ -1,6 +1,7 @@
 package reminderProject;
 
 import reminderProject.model.EmployeeHandler;
+import reminderProject.model.RemiderHandler;
 
 import java.util.Scanner;
 
@@ -8,10 +9,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-
-//        System.out.println("Initial version");
-//        HibernateUtil.getOurSessionFactory();
         EmployeeHandler employeeHandler = new EmployeeHandler();
+        RemiderHandler remiderHandler = new RemiderHandler();
 
         Scanner scanner = new Scanner(System.in);
 
@@ -24,23 +23,24 @@ public class Main {
             command = scanner.nextLine();
             String[] words = command.split(" ");
 
-            if(words[0].equalsIgnoreCase("employee")){
+            if (words[0].equalsIgnoreCase("employee")) {
+
                 employeeHandler.handleEmployee(words);
-            } else if(words[0].equalsIgnoreCase("Reminder")) {
-
+            } else if (words[0].equalsIgnoreCase("Reminder")) {
+                remiderHandler.handleRemidnder(words);
             }
-
 
         } while (!command.equalsIgnoreCase("quit"));
     }
 
     private static void printAllOption() {
-        System.out.println("Employee");
-        System.out.println("Remider ");
+        System.out.println("[Employee List] : ");
+        System.out.println("[Employee add] : {name} {surname} {type of contract} {finish contract}");
+        System.out.println("[Employee findby]: {id} {name} {surname} {type of contract} {finish contract}");
+        System.out.println("[Employee Delet]");
+        System.out.println("[Reminder List]: ");
+        System.out.println("[Remider add]: {type of remider} {amound} {date of remider} {period}");
+        System.out.println("[Reminder findBy] {id} {type of remider} {date of remider}");
+        System.out.println("[Remider delete]");
     }
-
-    private static void printAllOptionEmployee() {
-
-    }
-
 }

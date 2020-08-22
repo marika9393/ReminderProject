@@ -17,9 +17,12 @@ public class ReminderEmployee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Enumerated(value = EnumType.STRING)
     private TypeOfReminder typeOfReminder;
     private int amount;
     private LocalDate dateOfReminder;
+
+    @Enumerated(value = EnumType.STRING)
     private PeriodOfReminder periodOfReminder;
 
 

@@ -1,9 +1,14 @@
 package reminderProject.model;
 
+import com.mysql.cj.xdevapi.SchemaImpl;
 import reminderProject.database.EntityDao;
 import reminderProject.database.ReminderEmployeeDao;
 
+import java.sql.PseudoColumnUsage;
 import java.time.LocalDate;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class RemiderHandler {
@@ -13,10 +18,6 @@ public class RemiderHandler {
 
     public void handleRemidnder(String[] words) {
 
-        System.out.println("Reminder List: ");
-        System.out.println("Remider add: {type of remider} {amound} {date of remider} {period}");
-        System.out.println("Reminder findBy {id} {type of remider} {date of remider}");
-        System.out.println("Remider delete");
 
         if(words[1].equalsIgnoreCase("list")){
             showRemider();
@@ -42,15 +43,77 @@ public class RemiderHandler {
     }
 
     private void deleteReminder() {
+        EntityDao<ReminderEmployee> entityDao = new EntityDao<>();
+        Scanner scanner = new Scanner(System.in);
+        Long idNumber = Long.parseLong(scanner.nextLine());
+
+        Optional<ReminderEmployee> reminderToDelete = entityDao.findById(ReminderEmployee.class, idNumber);
+        if (reminderToDelete.isPresent()) {
+            ReminderEmployee reminderEmployee = reminderToDelete.get();
+            System.out.println("Delete Reminder");
+            entityDao.delete(reminderEmployee);
+        } else {
+            System.out.println("Not found reminder to delete");
+        }
     }
 
     private void findByDateOfReminder() {
+        System.out.println("Choose date of reminder: ");
+        LocalDate data = LocalDate.of(Integer.parseInt(scanner.nextLine()), Integer.parseInt(scanner.nextLine()), Integer.parseInt(scanner.nextLine()));
+
+        List<ReminderEmployee> resultRemiderList = reminderEmployeeDao.findBydateOdReminder(data);
+
+        if (resultRemiderList.stream().findFirst().isPresent()) {
+            System.out.println("Reminder found: ");
+            resultRemiderList.forEach(System.out::println);
+        } else
+            System.out.println("Reminder not found");
     }
 
     private void findByTypeOfReminder() {
+        System.out.println("Choose type of reminder:  \n" +
+                "UBEZPIECZENIE_ZUS - ZUS,\n" +
+                "WYPLATA - wyplata,\n" +
+                "PODATEK_OD_WYNAGRODZENIA - podatek,\n" +
+                "DELEGACJA - delegacja,\n" +
+                "BADANIA_OKRESOWE - badania,\n" +
+                "LISTA_OBECNOSCI - lista;");
+
+        boolean error = true;
+
+        do {
+            try {
+                TypeOfReminder typeOfReminder = TypeOfReminder.valueOfShortReminder(scanner.nextLine());
+
+                List<ReminderEmployee> resultReminderList = reminderEmployeeDao.findByTypeOfReminder(typeOfReminder);
+                error = false;
+
+                if ((resultReminderList.stream().findFirst().isPresent())) {
+                    System.out.println("Reminder found: ");
+                    resultReminderList.forEach(System.out::println);
+                } else
+                    System.out.println("Reminder not found");
+            } catch (InputMismatchException e) {
+                System.out.println("Write the correct type ");
+                scanner.nextLine();
+            }
+        } while (error);
     }
 
     private void findByIdReminder() {
+
+        EntityDao<ReminderEmployee> entityDao = new EntityDao<>();
+
+        System.out.println("Write id number: ");
+        Long idNumber = Long.parseLong(scanner.nextLine());
+
+        Optional<ReminderEmployee> resultReminderEmployee = entityDao
+                .findById(ReminderEmployee.class, idNumber);
+
+        if (resultReminderEmployee.isPresent()) {
+            System.out.println("Found remidner: "  + resultReminderEmployee);
+        } else
+            System.out.println("Reminder not found");
     }
 
     private void addRemider() {
@@ -82,7 +145,7 @@ public class RemiderHandler {
                 typeOfReminder = TypeOfReminder.BADANIA_OKRESOWE;
                 break;
             case 6:
-                typeOfReminder = TypeOfReminder.lISTA_OBECNOSCI;
+                typeOfReminder = TypeOfReminder.LISTA_OBECNOSCI;
                 break;
             default:
                 throw new IllegalStateException("Unexpected value" + type);
