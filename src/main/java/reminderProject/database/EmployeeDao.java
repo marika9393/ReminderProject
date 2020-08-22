@@ -15,36 +15,7 @@ import java.util.List;
 
 public class EmployeeDao {
 
-    public List<Employee> findByAny(String phrase) {
 
-        List<Employee> list = new ArrayList<>();
-
-        SessionFactory sessionFactory = HibernateUtil.getOurSessionFactory();
-        try (Session session = sessionFactory.openSession()) {
-
-            CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<Employee> criteriaQuery = cb.createQuery(Employee.class);
-
-            Root<Employee> employeeRoot = criteriaQuery.from(Employee.class);
-
-            criteriaQuery
-                    .select(employeeRoot)
-                    .where(
-                            cb.or(
-                                    cb.like(employeeRoot.get("firstname"), phrase),
-                                    cb.like(employeeRoot.get("surname"), phrase),
-                                    cb.like(employeeRoot.get("typeOfContract"), phrase),
-                                    cb.like(employeeRoot.get("finishContract"), phrase)
-                            )
-                    ).orderBy(cb.asc(employeeRoot.get("firstname")));
-
-            list.addAll(session.createQuery(criteriaQuery).list());
-        } catch (HibernateException he) {
-            he.printStackTrace();
-        }
-
-        return list;
-    }
 
     public List<Employee> findByName(String name) {
         List<Employee> listByName = new ArrayList<>();
