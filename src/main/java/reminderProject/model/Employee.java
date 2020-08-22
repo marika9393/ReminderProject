@@ -1,10 +1,7 @@
 package reminderProject.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,6 +9,7 @@ import java.util.List;
 
 @Data
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Employee {
@@ -20,37 +18,28 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idEmpl;
 
-    private String firstName;
+    private String firstname;
     private String surname;
 
-//    @Enumerated(value = EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     private TypeOfContract typeOfContract;
-    private LocalDate finishContract;
 
+    private LocalDate finishContract;
 
     @OneToMany (mappedBy = "employee", fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
     private List<ReminderEmployee> reminderEmployee;
 
     public Employee(String firstName, String surname) {
-        this.firstName = firstName;
+        this.firstname = firstName;
         this.surname = surname;
     }
 
     public Employee(String firstName, String surname, TypeOfContract typeOfContract, LocalDate finishContract) {
-        this.firstName = firstName;
+        this.firstname = firstName;
         this.surname = surname;
         this.typeOfContract = typeOfContract;
         this.finishContract = finishContract;
     }
-//
-//    public enum TypeOfContract {
-//        UMOWA_O_PRACE_OKRES_PROBNY(1),
-//        UMOWA_O_PRACE_NA_CZAS_OKRESLONY(2),
-//        UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY(3);
-//
-//        TypeOfContract(int i) {
-//        }
-//    }
 }
 

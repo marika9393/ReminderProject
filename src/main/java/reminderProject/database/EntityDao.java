@@ -6,10 +6,13 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import reminderProject.model.Employee;
+import reminderProject.model.TypeOfContract;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.awt.image.AreaAveragingScaleFilter;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -92,37 +95,5 @@ public class EntityDao<T> {
             he.printStackTrace();
         }
         return list;
-    }
-
-    public List<Employee> findByName(Class<Employee> classType, String name) {
-        List<Employee> listByName = new ArrayList<>();
-        SessionFactory sessionFactory = HibernateUtil.getOurSessionFactory();
-        try (Session session = sessionFactory.openSession()) {
-            CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<Employee> criteriaQuery = cb.createQuery(classType);
-            Root<Employee> employeeRoot = criteriaQuery.from(classType);
-            criteriaQuery.select(employeeRoot)
-                    .where(cb.equal(employeeRoot.get("name"), name));
-            listByName.addAll(session.createQuery(criteriaQuery).list());
-        }catch (HibernateException he) {
-            he.printStackTrace();
-        }
-        return listByName;
-    }
-
-    public List<Employee> findBySurname(Class<Employee> classType, String surname) {
-        List<Employee> listBySurname = new ArrayList<>();
-        SessionFactory sessionFactory = HibernateUtil.getOurSessionFactory();
-        try (Session session = sessionFactory.openSession()) {
-            CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<Employee> criteriaQuery = cb.createQuery(classType);
-            Root<Employee> employeeRoot = criteriaQuery.from(classType);
-            criteriaQuery.select(employeeRoot)
-                    .where(cb.equal(employeeRoot.get("surname"), surname));
-            listBySurname.addAll(session.createQuery(criteriaQuery).list());
-        }catch (HibernateException he) {
-            he.printStackTrace();
-        }
-        return listBySurname;
     }
 }

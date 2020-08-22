@@ -1,10 +1,25 @@
 package reminderProject.model;
 
-public enum TypeOfContract {
-    UMOWA_O_PRACE_OKRES_PROBNY(1),
-    UMOWA_O_PRACE_NA_CZAS_OKRESLONY(2),
-    UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY(3);
+import java.util.InputMismatchException;
 
-    TypeOfContract(int i) {
+public enum TypeOfContract {
+    UMOWA_O_PRACE_OKRES_PROBNY("proba"),
+    UMOWA_O_PRACE_NA_CZAS_OKRESLONY("okreslony"),
+    UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY("nieokreslony");
+
+    private String skroconaNazwa;
+
+    TypeOfContract(String skroconaNazwa) {
+        this.skroconaNazwa = skroconaNazwa;
+    }
+    public static TypeOfContract valueOfShort(String skroconaNazwa){
+        if(skroconaNazwa.equalsIgnoreCase(UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY.skroconaNazwa)){
+            return UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY;
+        }else if(skroconaNazwa.equalsIgnoreCase(UMOWA_O_PRACE_NA_CZAS_OKRESLONY.skroconaNazwa)){
+            return UMOWA_O_PRACE_NA_CZAS_OKRESLONY;
+        } else if(skroconaNazwa.equalsIgnoreCase(UMOWA_O_PRACE_OKRES_PROBNY.skroconaNazwa)){
+            return UMOWA_O_PRACE_OKRES_PROBNY;
+        }
+        throw new InputMismatchException();
     }
 }
