@@ -96,5 +96,7 @@ public class CarHandler {
 
         Car car = new Car(mark, model, regNum);
         carEntityDao.saveOrUpdate(car);
+
+        System.out.println("Car added");
     }
 }

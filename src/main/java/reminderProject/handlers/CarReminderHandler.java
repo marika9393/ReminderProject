@@ -3,10 +3,7 @@ package reminderProject.handlers;
 
 import reminderProject.database.CarReminderDao;
 import reminderProject.database.EntityDao;
-import reminderProject.model.Car;
-import reminderProject.model.CarReminder;
-import reminderProject.model.ReminderPeriod;
-import reminderProject.model.ReminderType;
+import reminderProject.model.*;
 
 import java.time.LocalDate;
 import java.util.InputMismatchException;
@@ -17,6 +14,7 @@ import java.util.Scanner;
 public class CarReminderHandler {
     private Scanner scanner = new Scanner(System.in);
     private EntityDao<Car> carEntityDao = new EntityDao<>();
+    private EntityDao<CarReminder> carReminderEntityDao = new EntityDao<>();
     private CarReminderDao carReminderDao = new CarReminderDao();
 
     public void handlerReminder() {
@@ -31,6 +29,8 @@ public class CarReminderHandler {
             showCarReminder();
         } else if (command.equalsIgnoreCase("findby")) {
             findByCarReminder(carReminderDao);
+        } else if (command.equalsIgnoreCase("addedtocar")) {
+            handleAddReminderToCar();
         } else if (command.equalsIgnoreCase("delete")) {
             deleteCarReminder();
         }
@@ -40,6 +40,7 @@ public class CarReminderHandler {
         System.out.println(" - [show]");
         System.out.println(" - [add]");
         System.out.println(" - [findby]");
+        System.out.println(" - [addedtocar]");
         System.out.println(" - [delete]");
     }
 
@@ -187,14 +188,61 @@ public class CarReminderHandler {
             default:
                 throw new IllegalStateException("Unexpected value" + period);
         }
+        String input;
+        System.out.println("Do you want add Car? [y/n] ");
+        input = scanner.nextLine();
 
-        Car car = askUserForCar();
+        if (input.equalsIgnoreCase("y")) {
+            Car car = askUserForCar();
+            CarReminder carReminder = new CarReminder(reminderType, amount, LocalDate.of(year, month, day), reminderPeriod);
+            carReminder.setCar(car);
+            carReminderEntityDao.saveOrUpdate(carReminder);
+            System.out.println("Reminder added with car");
 
-        CarReminder carReminder = new CarReminder(reminderType, amount, LocalDate.of(year, month, day), reminderPeriod);
+        } else if (input.equalsIgnoreCase("n")){
+            CarReminder carReminder = new CarReminder(reminderType, amount, LocalDate.of(year, month, day), reminderPeriod);
+            carReminderEntityDao.saveOrUpdate(carReminder);
+            System.out.println("Reminder added");
+        }
+
+    }
+
+    private void handleAddReminderToCar() {
+        Car car = null;
+        CarReminder carReminder = null;
+        do {
+            System.out.println("List of cars:");
+            carEntityDao.findAll(Car.class)
+                    .forEach(System.out::println);
+
+            System.out.println("Enter id car:");
+            Long id = Long.parseLong(scanner.next());
+
+            Optional<Car> carOptional = carEntityDao.findById(Car.class, id);
+            if (carOptional.isPresent()) {
+                car = carOptional.get();
+            }
+        } while (car == null);
+
+        System.out.println("Car selected");
+
+        do {
+            System.out.println("List of reminders:");
+            carReminderEntityDao.findAll(CarReminder.class)
+                    .forEach(System.out::println);
+
+            System.out.println("Enter id:");
+            Long id = Long.parseLong(scanner.next());
+
+            Optional<CarReminder> reminderCarOptional = carReminderEntityDao.findById(CarReminder.class, id);
+            if (reminderCarOptional.isPresent()) {
+                carReminder = reminderCarOptional.get();
+            }
+        } while (carReminder == null);
+        System.out.println("Reminder selected.");
+
         carReminder.setCar(car);
         carReminderEntityDao.saveOrUpdate(carReminder);
-
-        System.out.println("Reminder added");
     }
 
     private Car askUserForCar() {
