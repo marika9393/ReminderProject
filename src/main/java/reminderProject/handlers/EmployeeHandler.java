@@ -4,6 +4,7 @@ import reminderProject.database.EmployeeDao;
 import reminderProject.database.EntityDao;
 import reminderProject.database.ReminderEmployeeDao;
 import reminderProject.model.Employee;
+import reminderProject.model.ReminderEmployee;
 import reminderProject.model.TypeOfContract;
 
 import java.time.LocalDate;
@@ -13,7 +14,7 @@ public class EmployeeHandler {
 
     private Scanner scanner = new Scanner(System.in);
     private EmployeeDao employeeDao = new EmployeeDao();
-    private EntityDao<Employee> entityDaoEmployee = new EntityDao<>();
+
 
     String command;
 
@@ -206,10 +207,7 @@ public class EmployeeHandler {
         } else {
             employee = new Employee(firstName, surname, typeOfContract, null);
         }
-
         employeeEntityDao.saveOrUpdate(employee);
-
-
     }
 
 
@@ -221,6 +219,4 @@ public class EmployeeHandler {
                 .forEach(System.out::println);
 
     }
-
-
 }

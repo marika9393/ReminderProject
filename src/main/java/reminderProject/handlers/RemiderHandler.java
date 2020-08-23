@@ -1,6 +1,7 @@
 package reminderProject.handlers;
 
 import com.mysql.cj.xdevapi.SchemaImpl;
+import reminderProject.database.EmployeeDao;
 import reminderProject.database.EntityDao;
 import reminderProject.database.ReminderEmployeeDao;
 import reminderProject.model.Employee;
@@ -46,6 +47,8 @@ public class RemiderHandler {
             } else if (commandFindBy.equalsIgnoreCase("termination")) {
                 findByDateOfReminder();
             }
+        } else if (command.equalsIgnoreCase("addedToEmployee")) {
+            handleAddReminderToEmployee();
         } else if (command.equalsIgnoreCase("delete")) {
             deleteReminder();
         }
@@ -56,6 +59,7 @@ public class RemiderHandler {
         System.out.println("Reminder [List]: ");
         System.out.println("Remider [add]: ");
         System.out.println("Reminder [findBy] ");
+        System.out.println("Reminder [addedToEmployee]");
         System.out.println("Remider [delete]");
 
     }
@@ -206,11 +210,42 @@ public class RemiderHandler {
             default:
                 throw new IllegalStateException("Unexepcted value: " + period);
         }
-        ReminderEmployee reminderEmployee = new ReminderEmployee(typeOfReminder, timeofAmount, LocalDate.of(year, month, day), periodOfReminder);
+        String input;
+        System.out.println("Do you want add Employee? [y/n] ");
+        input = scanner.nextLine();
+        if (input.equalsIgnoreCase("y")) {
+            Employee employee = askUserForEmployee();
 
-//        Employee employee = askUserForEmployee();
+            ReminderEmployee reminderEmployee = new ReminderEmployee(typeOfReminder, timeofAmount, LocalDate.of(year, month, day), periodOfReminder);
+            reminderEmployee.setEmployee(employee);
+            reminderEntityDao.saveOrUpdate(reminderEmployee);
+            System.out.println("Remider with employee added");
+        } else if (input.equalsIgnoreCase("n")) {
+            ReminderEmployee reminderEmployee = new ReminderEmployee(typeOfReminder, timeofAmount, LocalDate.of(year, month, day), periodOfReminder);
+            reminderEntityDao.saveOrUpdate(reminderEmployee);
+            System.out.println("Remider added");
+        }
+    }
 
-        reminderEntityDao.saveOrUpdate(reminderEmployee);
+
+    private Employee askUserForEmployee() {
+        Employee employee = null;
+
+        do {
+            System.out.println("This is a list of employee");
+            employeeEntityDao
+                    .findAll(Employee.class)
+                    .forEach(System.out::println);
+            System.out.println();
+            System.out.println("Provide employee id: ");
+
+            Long idEmployee = Long.parseLong(scanner.nextLine());
+            Optional<Employee> optionalEmployee = employeeEntityDao.findById(Employee.class, idEmployee);
+            if (optionalEmployee.isPresent()) {
+                employee = optionalEmployee.get();
+            }
+        } while (employee == null);
+        return employee;
     }
 
     private void handleAddReminderToEmployee() {
