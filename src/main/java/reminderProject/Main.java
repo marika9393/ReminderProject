@@ -1,8 +1,12 @@
 package reminderProject;
 
+import reminderProject.database.EntityDao;
+import reminderProject.model.Employee;
 import reminderProject.model.EmployeeHandler;
 import reminderProject.model.RemiderHandler;
+import reminderProject.model.ReminderEmployee;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {
@@ -13,34 +17,28 @@ public class Main {
         RemiderHandler remiderHandler = new RemiderHandler();
 
         Scanner scanner = new Scanner(System.in);
-
         String command;
 
         do {
             System.out.println("Write command: ");
-            printAllOption();
+            printFirstOption();
 
             command = scanner.nextLine();
-            String[] words = command.split(" ");
 
-            if (words[0].equalsIgnoreCase("employee")) {
-
-                employeeHandler.handleEmployee(words);
-            } else if (words[0].equalsIgnoreCase("Reminder")) {
-                remiderHandler.handleRemidnder(words);
+            if (command.equalsIgnoreCase("employee")) {
+                employeeHandler.handleEmployee();
+            } else if (command.equalsIgnoreCase("reminder")) {
+                remiderHandler.handleRemidnder();
             }
 
         } while (!command.equalsIgnoreCase("quit"));
     }
 
-    private static void printAllOption() {
-        System.out.println("[Employee List] : ");
-        System.out.println("[Employee add] : {name} {surname} {type of contract} {finish contract}");
-        System.out.println("[Employee findby]: {id} {name} {surname} {type of contract} {finish contract}");
-        System.out.println("[Employee Delet]");
-        System.out.println("[Reminder List]: ");
-        System.out.println("[Remider add]: {type of remider} {amound} {date of remider} {period}");
-        System.out.println("[Reminder findBy] {id} {type of remider} {date of remider}");
-        System.out.println("[Remider delete]");
+
+
+    private static void printFirstOption() {
+        System.out.println("Employee");
+        System.out.println("Reminder");
+        System.out.println("[Quit]");
     }
 }

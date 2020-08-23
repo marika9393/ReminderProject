@@ -14,37 +14,50 @@ import java.util.Scanner;
 public class RemiderHandler {
 
     private Scanner scanner = new Scanner(System.in);
+    private EntityDao<Employee> employeeEntityDao = new EntityDao<>();
+    private EntityDao<ReminderEmployee> reminderEmployeeEntityDao = new EntityDao<>();
     private ReminderEmployeeDao reminderEmployeeDao = new ReminderEmployeeDao();
 
-    public void handleRemidnder(String[] words) {
+
+    public void handleRemidnder() {
+        System.out.println("Write command: ");
+        printReminderCommand();
+        String command = scanner.nextLine();
 
 
-        if(words[1].equalsIgnoreCase("list")){
+        if (command.equalsIgnoreCase("list")) {
             showRemider();
-        } else if (words[1].equalsIgnoreCase("add")) {
+        } else if (command.equalsIgnoreCase("add")) {
             addRemider();
-        } else if (words[1].equalsIgnoreCase("findBy")) {
+        } else if (command.equalsIgnoreCase("findBy")) {
             System.out.println("id reminder \n" +
                     "type \n" +
                     "termination");
-            String command = scanner.nextLine();
+            String commandFindBy = scanner.nextLine();
 
-            if(command.equalsIgnoreCase("id")) {
+            if (commandFindBy.equalsIgnoreCase("id")) {
                 findByIdReminder();
-            } else if(command.equalsIgnoreCase("type")) {
+            } else if (commandFindBy.equalsIgnoreCase("type")) {
                 findByTypeOfReminder();
-            } else if (command.equalsIgnoreCase("termination")) {
+            } else if (commandFindBy.equalsIgnoreCase("termination")) {
                 findByDateOfReminder();
             }
-        } else if (words[1].equalsIgnoreCase("delete")){
+        } else if (command.equalsIgnoreCase("delete")) {
             deleteReminder();
         }
 
     }
 
+    private void printReminderCommand() {
+        System.out.println("Reminder [List]: ");
+        System.out.println("Remider [add]: ");
+        System.out.println("Reminder [findBy] ");
+        System.out.println("Remider [delete]");
+
+    }
+
     private void deleteReminder() {
         EntityDao<ReminderEmployee> entityDao = new EntityDao<>();
-        Scanner scanner = new Scanner(System.in);
         Long idNumber = Long.parseLong(scanner.nextLine());
 
         Optional<ReminderEmployee> reminderToDelete = entityDao.findById(ReminderEmployee.class, idNumber);
@@ -111,7 +124,7 @@ public class RemiderHandler {
                 .findById(ReminderEmployee.class, idNumber);
 
         if (resultReminderEmployee.isPresent()) {
-            System.out.println("Found remidner: "  + resultReminderEmployee);
+            System.out.println("Found remidner: " + resultReminderEmployee);
         } else
             System.out.println("Reminder not found");
     }
@@ -189,8 +202,49 @@ public class RemiderHandler {
             default:
                 throw new IllegalStateException("Unexepcted value: " + period);
         }
-        ReminderEmployee reminderEmployee = new ReminderEmployee(typeOfReminder,timeofAmount, LocalDate.of(year,month,day), periodOfReminder);
+        ReminderEmployee reminderEmployee = new ReminderEmployee(typeOfReminder, timeofAmount, LocalDate.of(year, month, day), periodOfReminder);
+
+//        Employee employee = askUserForEmployee();
+
         reminderEntityDao.saveOrUpdate(reminderEmployee);
+    }
+
+    private void handleAddReminderToEmployee() {
+        Employee employee = null;
+        ReminderEmployee reminderEmployee = null;
+        do {
+            System.out.println("List of employees:");
+            employeeEntityDao.findAll(Employee.class)
+                    .forEach(System.out::println);
+
+            System.out.println("Podaj id pracownika:");
+            Long id = Long.parseLong(scanner.next());
+
+            Optional<Employee> employeeOptional = employeeEntityDao.findById(Employee.class, id);
+            if (employeeOptional.isPresent()) {
+                employee = employeeOptional.get();
+            }
+        } while (employee == null);
+
+        System.out.println("Pracownik wybrany");
+
+        do {
+            System.out.println("List of reminders:");
+            reminderEmployeeEntityDao.findAll(ReminderEmployee.class)
+                    .forEach(System.out::println);
+
+            System.out.println("Podaj id:");
+            Long id = Long.parseLong(scanner.next());
+
+            Optional<ReminderEmployee> reminderEmployeeOptional = reminderEmployeeEntityDao.findById(ReminderEmployee.class, id);
+            if (reminderEmployeeOptional.isPresent()) {
+                reminderEmployee = reminderEmployeeOptional.get();
+            }
+        } while (reminderEmployee == null);
+        System.out.println("Reminder wybrany.");
+
+        reminderEmployee.setEmployee(employee);
+        reminderEmployeeEntityDao.saveOrUpdate(reminderEmployee);
     }
 
     private void showRemider() {

@@ -55,7 +55,6 @@ public class EntityDao<T> {
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
 
-            // instrukcja która służy do usuwania z bazy danych
             session.delete(entity);
 
             transaction.commit();
@@ -72,24 +71,13 @@ public class EntityDao<T> {
         SessionFactory sessionFactory = HibernateUtil.getOurSessionFactory();
         try (Session session = sessionFactory.openSession()) {
 
-            // narzędzie do tworzenia zapytań i kreowania klauzuli 'where'
             CriteriaBuilder cb = session.getCriteriaBuilder();
-
-            // obiekt reprezentujący zapytanie
             CriteriaQuery<T> criteriaQuery = cb.createQuery(classType);
 
-            // obiekt reprezentujący tabelę bazodanową.
-            // do jakiej tabeli kierujemy nasze zapytanie?
             Root<T> rootTable = criteriaQuery.from(classType);
-
-            // wykonanie zapytania
             criteriaQuery.select(rootTable);
 
-            // specification
             list.addAll(session.createQuery(criteriaQuery).list());
-
-            // poznanie uniwersalnego rozwiązania które działa z każdą bazą danych
-            // używanie klas których będziecie używać na JPA (Spring)
 
         } catch (HibernateException he) {
             he.printStackTrace();

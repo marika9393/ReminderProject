@@ -14,6 +14,7 @@ public enum TypeOfReminder {
     private String skroconaNazwa;
 
     TypeOfReminder(String skroconaNazwa) {
+
         this.skroconaNazwa = skroconaNazwa;
     }
 

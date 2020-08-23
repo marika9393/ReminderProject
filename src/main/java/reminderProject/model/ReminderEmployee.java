@@ -15,7 +15,7 @@ public class ReminderEmployee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Enumerated(value = EnumType.STRING)
     private TypeOfReminder typeOfReminder;

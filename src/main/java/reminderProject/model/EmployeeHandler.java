@@ -2,54 +2,66 @@ package reminderProject.model;
 
 import reminderProject.database.EmployeeDao;
 import reminderProject.database.EntityDao;
+import reminderProject.database.ReminderEmployeeDao;
 
 import java.time.LocalDate;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 public class EmployeeHandler {
+
     private Scanner scanner = new Scanner(System.in);
     private EmployeeDao employeeDao = new EmployeeDao();
+    private EntityDao<Employee> entityDaoEmployee = new EntityDao<>();
 
-    public void handleEmployee(String[] words) {
+    String command;
 
-        if (words[1].equalsIgnoreCase("list")) {
+    public void handleEmployee() {
+        System.out.println("Write command: ");
+        printEmployeeCommand();
+        command = scanner.nextLine();
+
+
+        if (command.equalsIgnoreCase("list")) {
             showEmployees();
-        } else if (words[1].equalsIgnoreCase("add")) {
+        } else if (command.equalsIgnoreCase("add")) {
             addEmployee();
 
-        } else if (words[1].equalsIgnoreCase("findby")) {
+        } else if (command.equalsIgnoreCase("findby")) {
             System.out.println("id employee \n" +
                     "firstname \n" +
                     "surname \n" +
                     "contract \n" +
                     "termination \n");
-            String command = scanner.nextLine();
+            String commandFindBy = scanner.nextLine();
 
-            if (command.equalsIgnoreCase("id")) {
+            if (commandFindBy.equalsIgnoreCase("id")) {
                 findByIdEmployee();
-            } else if (command.equalsIgnoreCase("firstname")) {
+            } else if (commandFindBy.equalsIgnoreCase("firstname")) {
                 findByNameEmployee();
-            } else if (command.equalsIgnoreCase("surname")) {
+            } else if (commandFindBy.equalsIgnoreCase("surname")) {
                 findBySurname();
-            } else if (command.equalsIgnoreCase("contract") ) {
+            } else if (commandFindBy.equalsIgnoreCase("contract")) {
                 findByTypeOfContractEmployee();
-            } else if (command.equalsIgnoreCase("termination") ) {
+            } else if (commandFindBy.equalsIgnoreCase("termination")) {
                 findByFinishContract();
             }
 
-        } else if (words[1].equalsIgnoreCase("delete")) {
+        } else if (command.equalsIgnoreCase("delete")) {
             deleteEmployee();
         }
     }
 
+    private static void printEmployeeCommand() {
+        System.out.println("[Employee [list] : ");
+        System.out.println("[Employee [add] : ");
+        System.out.println("[Employee [findby]:");
+        System.out.println("[Employee[delete]");
+    }
 
 
-    private static void deleteEmployee() {
+    private void deleteEmployee() {
         EntityDao<Employee> entityDao = new EntityDao<>();
-        Scanner scanner = new Scanner(System.in);
+        System.out.println("Which employee do you want delete ?");
         Long idNumber = Long.parseLong(scanner.nextLine());
 
         Optional<Employee> employeeToDelete = entityDao.findById(Employee.class, idNumber);
@@ -147,9 +159,9 @@ public class EmployeeHandler {
     }
 
 
-
     private void addEmployee() {
         EntityDao<Employee> employeeEntityDao = new EntityDao<>();
+
 
         System.out.println("Write firstname");
         String firstName = scanner.nextLine();
@@ -178,11 +190,10 @@ public class EmployeeHandler {
         }
 
         System.out.println("Write date of finish the contract");
-        scanner.nextLine();
 
         Employee employee;
 
-        if(typeOfContract != TypeOfContract.UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY) {
+        if (typeOfContract != TypeOfContract.UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY) {
             System.out.println("Write year");
             int year = Integer.parseInt(scanner.nextLine());
             System.out.println("Write month");
@@ -190,15 +201,17 @@ public class EmployeeHandler {
             System.out.println("Write day");
             int day = Integer.parseInt(scanner.nextLine());
             employee = new Employee(firstName, surname, typeOfContract, LocalDate.of(year, month, day));
-        }else{
+        } else {
             employee = new Employee(firstName, surname, typeOfContract, null);
         }
 
         employeeEntityDao.saveOrUpdate(employee);
+
+
     }
 
 
-    private static void showEmployees() {
+    private void showEmployees() {
         EntityDao<Employee> employeeEntityDao = new EntityDao<>();
         employeeEntityDao
                 .findAll(Employee.class)
@@ -206,4 +219,6 @@ public class EmployeeHandler {
                 .forEach(System.out::println);
 
     }
+
+
 }
