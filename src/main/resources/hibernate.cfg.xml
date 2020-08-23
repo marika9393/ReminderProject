@@ -21,5 +21,8 @@
 <!--        &lt;!&ndash;TODO: na potem - dopisanie klas obsługiwanych przez hibernate &ndash;&gt;-->
         <mapping class="reminderProject.model.Employee"/>
         <mapping class="reminderProject.model.ReminderEmployee"/>
+        <mapping class="reminderProject.model.Car"/>
+        <mapping class="reminderProject.model.CarReminder"/>
+
     </session-factory>
 </hibernate-configuration>

@@ -1,12 +1,10 @@
 package reminderProject;
 
-import reminderProject.database.EntityDao;
-import reminderProject.model.Employee;
-import reminderProject.model.EmployeeHandler;
-import reminderProject.model.RemiderHandler;
-import reminderProject.model.ReminderEmployee;
+import reminderProject.handlers.CarHandler;
+import reminderProject.handlers.CarReminderHandler;
+import reminderProject.handlers.EmployeeHandler;
+import reminderProject.handlers.RemiderHandler;
 
-import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {
@@ -15,6 +13,8 @@ public class Main {
 
         EmployeeHandler employeeHandler = new EmployeeHandler();
         RemiderHandler remiderHandler = new RemiderHandler();
+        CarHandler carHandler = new CarHandler();
+        CarReminderHandler carReminderHandler = new CarReminderHandler();
 
         Scanner scanner = new Scanner(System.in);
         String command;
@@ -27,13 +27,16 @@ public class Main {
 
             if (command.equalsIgnoreCase("employee")) {
                 employeeHandler.handleEmployee();
-            } else if (command.equalsIgnoreCase("reminder")) {
+            } else if (command.equalsIgnoreCase("employeereminder")) {
                 remiderHandler.handleRemidnder();
+            } else if (command.equalsIgnoreCase("car")) {
+                carHandler.handle();
+            } else if (command.equalsIgnoreCase("carreminder")) {
+                carReminderHandler.handlerReminder();
             }
 
         } while (!command.equalsIgnoreCase("quit"));
     }
-
 
 
     private static void printFirstOption() {

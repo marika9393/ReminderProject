@@ -1,8 +1,12 @@
-package reminderProject.model;
+package reminderProject.handlers;
 
 import com.mysql.cj.xdevapi.SchemaImpl;
 import reminderProject.database.EntityDao;
 import reminderProject.database.ReminderEmployeeDao;
+import reminderProject.model.Employee;
+import reminderProject.model.PeriodOfReminder;
+import reminderProject.model.ReminderEmployee;
+import reminderProject.model.TypeOfReminder;
 
 import java.sql.PseudoColumnUsage;
 import java.time.LocalDate;

@@ -1,8 +1,10 @@
-package reminderProject.model;
+package reminderProject.handlers;
 
 import reminderProject.database.EmployeeDao;
 import reminderProject.database.EntityDao;
 import reminderProject.database.ReminderEmployeeDao;
+import reminderProject.model.Employee;
+import reminderProject.model.TypeOfContract;
 
 import java.time.LocalDate;
 import java.util.*;
