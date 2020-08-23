@@ -41,7 +41,9 @@ public class Main {
 
     private static void printFirstOption() {
         System.out.println("Employee");
-        System.out.println("Reminder");
+        System.out.println("EmployeeReminder");
+        System.out.println("Car");
+        System.out.println("CarReminder");
         System.out.println("[Quit]");
     }
 }
