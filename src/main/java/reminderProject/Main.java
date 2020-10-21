@@ -3,7 +3,7 @@ package reminderProject;
 import reminderProject.handlers.CarHandler;
 import reminderProject.handlers.CarReminderHandler;
 import reminderProject.handlers.EmployeeHandler;
-import reminderProject.handlers.RemiderHandler;
+import reminderProject.handlers.EmployeeRemiderHandler;
 
 import java.util.Scanner;
 
@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
 
         EmployeeHandler employeeHandler = new EmployeeHandler();
-        RemiderHandler remiderHandler = new RemiderHandler();
+        EmployeeRemiderHandler employeeRemiderHandler = new EmployeeRemiderHandler();
         CarHandler carHandler = new CarHandler();
         CarReminderHandler carReminderHandler = new CarReminderHandler();
 
@@ -28,7 +28,7 @@ public class Main {
             if (command.equalsIgnoreCase("employee")) {
                 employeeHandler.handleEmployee();
             } else if (command.equalsIgnoreCase("employeereminder")) {
-                remiderHandler.handleRemidnder();
+                employeeRemiderHandler.handleRemidnder();
             } else if (command.equalsIgnoreCase("car")) {
                 carHandler.handle();
             } else if (command.equalsIgnoreCase("carreminder")) {

@@ -11,19 +11,19 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReminderEmployee {
+public class EmployeeReminder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(value = EnumType.STRING)
-    private TypeOfReminder typeOfReminder;
+    private EmployeeReminderType typeOfReminder;
     private int amount;
     private LocalDate dateOfReminder;
 
     @Enumerated(value = EnumType.STRING)
-    private PeriodOfReminder periodOfReminder;
+    private ReminderPeriod reminderPeriod;
 
 
     @ManyToOne
@@ -31,10 +31,10 @@ public class ReminderEmployee {
     @EqualsAndHashCode.Exclude
     private Employee employee;
 
-    public ReminderEmployee(TypeOfReminder typeOfReminder, int amount, LocalDate dateOfReminder, PeriodOfReminder periodOfReminder) {
+    public EmployeeReminder(EmployeeReminderType typeOfReminder, int amount, LocalDate dateOfReminder, ReminderPeriod reminderPeriod) {
         this.typeOfReminder = typeOfReminder;
         this.amount = amount;
         this.dateOfReminder = dateOfReminder;
-        this.periodOfReminder = periodOfReminder;
+        this.reminderPeriod = reminderPeriod;
     }
 }

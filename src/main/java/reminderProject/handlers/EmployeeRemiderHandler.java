@@ -1,27 +1,25 @@
 package reminderProject.handlers;
 
-import com.mysql.cj.xdevapi.SchemaImpl;
-import reminderProject.database.EmployeeDao;
 import reminderProject.database.EntityDao;
-import reminderProject.database.ReminderEmployeeDao;
+import reminderProject.database.EmployeeReminderDao;
 import reminderProject.model.Employee;
-import reminderProject.model.PeriodOfReminder;
-import reminderProject.model.ReminderEmployee;
-import reminderProject.model.TypeOfReminder;
+import reminderProject.model.EmployeeReminder;
+import reminderProject.model.ReminderPeriod;
+import reminderProject.model.EmployeeReminderType;
 
-import java.sql.PseudoColumnUsage;
+
 import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-public class RemiderHandler {
+public class EmployeeRemiderHandler {
 
     private Scanner scanner = new Scanner(System.in);
     private EntityDao<Employee> employeeEntityDao = new EntityDao<>();
-    private EntityDao<ReminderEmployee> reminderEmployeeEntityDao = new EntityDao<>();
-    private ReminderEmployeeDao reminderEmployeeDao = new ReminderEmployeeDao();
+    private EntityDao<EmployeeReminder> reminderEmployeeEntityDao = new EntityDao<>();
+    private EmployeeReminderDao reminderEmployeeDao = new EmployeeReminderDao();
 
 
     public void handleRemidnder() {
@@ -56,22 +54,23 @@ public class RemiderHandler {
     }
 
     private void printReminderCommand() {
-        System.out.println("Reminder [List]: ");
-        System.out.println("Remider [add]: ");
-        System.out.println("Reminder [findBy] ");
-        System.out.println("Reminder [addedToEmployee]");
-        System.out.println("Remider [delete]");
+        System.out.println("Reminder - [List]: ");
+        System.out.println("Remider - [add]: ");
+        System.out.println("Reminder - [findBy]: ");
+        System.out.println("Reminder - [addedToEmployee]: ");
+        System.out.println("Remider - [delete]: ");
 
     }
 
     private void deleteReminder() {
-        EntityDao<ReminderEmployee> entityDao = new EntityDao<>();
+        EntityDao<EmployeeReminder> entityDao = new EntityDao<>();
+        System.out.println("Which car reminder to delete - enter the car reminder id:");
         Long idNumber = Long.parseLong(scanner.nextLine());
 
-        Optional<ReminderEmployee> reminderToDelete = entityDao.findById(ReminderEmployee.class, idNumber);
+        Optional<EmployeeReminder> reminderToDelete = entityDao.findById(EmployeeReminder.class, idNumber);
         if (reminderToDelete.isPresent()) {
-            ReminderEmployee reminderEmployee = reminderToDelete.get();
-            System.out.println("Delete Reminder");
+            EmployeeReminder reminderEmployee = reminderToDelete.get();
+            System.out.println("Employee reminder deleted");
             entityDao.delete(reminderEmployee);
         } else {
             System.out.println("Not found reminder to delete");
@@ -82,7 +81,7 @@ public class RemiderHandler {
         System.out.println("Choose date of reminder: ");
         LocalDate data = LocalDate.of(Integer.parseInt(scanner.nextLine()), Integer.parseInt(scanner.nextLine()), Integer.parseInt(scanner.nextLine()));
 
-        List<ReminderEmployee> resultRemiderList = reminderEmployeeDao.findBydateOdReminder(data);
+        List<EmployeeReminder> resultRemiderList = reminderEmployeeDao.findBydateOdReminder(data);
 
         if (resultRemiderList.stream().findFirst().isPresent()) {
             System.out.println("Reminder found: ");
@@ -104,9 +103,9 @@ public class RemiderHandler {
 
         do {
             try {
-                TypeOfReminder typeOfReminder = TypeOfReminder.valueOfShortReminder(scanner.nextLine());
+                EmployeeReminderType typeOfReminder = EmployeeReminderType.valueOfShortReminder(scanner.nextLine());
 
-                List<ReminderEmployee> resultReminderList = reminderEmployeeDao.findByTypeOfReminder(typeOfReminder);
+                List<EmployeeReminder> resultReminderList = reminderEmployeeDao.findByTypeOfReminder(typeOfReminder);
                 error = false;
 
                 if ((resultReminderList.stream().findFirst().isPresent())) {
@@ -123,13 +122,13 @@ public class RemiderHandler {
 
     private void findByIdReminder() {
 
-        EntityDao<ReminderEmployee> entityDao = new EntityDao<>();
+        EntityDao<EmployeeReminder> entityDao = new EntityDao<>();
 
         System.out.println("Write id number: ");
         Long idNumber = Long.parseLong(scanner.nextLine());
 
-        Optional<ReminderEmployee> resultReminderEmployee = entityDao
-                .findById(ReminderEmployee.class, idNumber);
+        Optional<EmployeeReminder> resultReminderEmployee = entityDao
+                .findById(EmployeeReminder.class, idNumber);
 
         if (resultReminderEmployee.isPresent()) {
             System.out.println("Found remidner: " + resultReminderEmployee);
@@ -138,7 +137,7 @@ public class RemiderHandler {
     }
 
     private void addRemider() {
-        EntityDao<ReminderEmployee> reminderEntityDao = new EntityDao<>();
+        EntityDao<EmployeeReminder> reminderEntityDao = new EntityDao<>();
 
         System.out.println("Choose type of reminder: \n" +
                 "1- ubezpieczenie ZUS \n" +
@@ -149,24 +148,24 @@ public class RemiderHandler {
                 "6- lista obecności");
 
         int type = Integer.parseInt(scanner.nextLine());
-        TypeOfReminder typeOfReminder;
+        EmployeeReminderType typeOfReminder;
         switch (type) {
             case 1:
-                typeOfReminder = TypeOfReminder.UBEZPIECZENIE_ZUS;
+                typeOfReminder = EmployeeReminderType.UBEZPIECZENIE_ZUS;
                 break;
             case 2:
-                typeOfReminder = TypeOfReminder.WYPLATA;
+                typeOfReminder = EmployeeReminderType.WYPLATA;
                 break;
             case 3:
-                typeOfReminder = TypeOfReminder.PODATEK_OD_WYNAGRODZENIA;
+                typeOfReminder = EmployeeReminderType.PODATEK_OD_WYNAGRODZENIA;
                 break;
             case 4:
-                typeOfReminder = TypeOfReminder.DELEGACJA;
+                typeOfReminder = EmployeeReminderType.DELEGACJA;
             case 5:
-                typeOfReminder = TypeOfReminder.BADANIA_OKRESOWE;
+                typeOfReminder = EmployeeReminderType.BADANIA_OKRESOWE;
                 break;
             case 6:
-                typeOfReminder = TypeOfReminder.LISTA_OBECNOSCI;
+                typeOfReminder = EmployeeReminderType.LISTA_OBECNOSCI;
                 break;
             default:
                 throw new IllegalStateException("Unexpected value" + type);
@@ -175,37 +174,37 @@ public class RemiderHandler {
         System.out.println("Write amount");
         int timeofAmount = Integer.parseInt(scanner.nextLine());
 
-        System.out.println("Write date of reminder");
-        System.out.println("Write year");
+        System.out.println("Write date: ");
+        System.out.println("YEAR");
         int year = Integer.parseInt(scanner.nextLine());
-        System.out.println("Write month");
+        System.out.println("MONTH");
         int month = Integer.parseInt(scanner.nextLine());
-        System.out.println("Write day");
+        System.out.println("DAY");
         int day = Integer.parseInt(scanner.nextLine());
 
         System.out.println("Choose period of reminder \n" +
-                "1 - year \n" +
-                "2 - month \n" +
-                "3 - week \n" +
-                "4 - day \n" +
-                "5 - none");
+                "1 - YEAR \n" +
+                "2 - MONTH \n" +
+                "3 - WEEK \n" +
+                "4 - DAY \n" +
+                "5 - NONE");
         int period = Integer.parseInt(scanner.nextLine());
-        PeriodOfReminder periodOfReminder;
+        ReminderPeriod reminderPeriod;
         switch (period) {
             case 1:
-                periodOfReminder = PeriodOfReminder.YEAR;
+                reminderPeriod = ReminderPeriod.YEAR;
                 break;
             case 2:
-                periodOfReminder = PeriodOfReminder.MONTH;
+                reminderPeriod = ReminderPeriod.MOUNTH;
                 break;
             case 3:
-                periodOfReminder = PeriodOfReminder.WEEK;
+                reminderPeriod = ReminderPeriod.WEEK;
                 break;
             case 4:
-                periodOfReminder = PeriodOfReminder.DAY;
+                reminderPeriod = ReminderPeriod.DAY;
                 break;
             case 5:
-                periodOfReminder = PeriodOfReminder.NONE;
+                reminderPeriod = ReminderPeriod.NONE;
                 break;
             default:
                 throw new IllegalStateException("Unexepcted value: " + period);
@@ -216,12 +215,12 @@ public class RemiderHandler {
         if (input.equalsIgnoreCase("y")) {
             Employee employee = askUserForEmployee();
 
-            ReminderEmployee reminderEmployee = new ReminderEmployee(typeOfReminder, timeofAmount, LocalDate.of(year, month, day), periodOfReminder);
+            EmployeeReminder reminderEmployee = new EmployeeReminder(typeOfReminder, timeofAmount, LocalDate.of(year, month, day), reminderPeriod);
             reminderEmployee.setEmployee(employee);
             reminderEntityDao.saveOrUpdate(reminderEmployee);
             System.out.println("Remider with employee added");
         } else if (input.equalsIgnoreCase("n")) {
-            ReminderEmployee reminderEmployee = new ReminderEmployee(typeOfReminder, timeofAmount, LocalDate.of(year, month, day), periodOfReminder);
+            EmployeeReminder reminderEmployee = new EmployeeReminder(typeOfReminder, timeofAmount, LocalDate.of(year, month, day), reminderPeriod);
             reminderEntityDao.saveOrUpdate(reminderEmployee);
             System.out.println("Remider added");
         }
@@ -250,7 +249,7 @@ public class RemiderHandler {
 
     private void handleAddReminderToEmployee() {
         Employee employee = null;
-        ReminderEmployee reminderEmployee = null;
+        EmployeeReminder reminderEmployee = null;
         do {
             System.out.println("List of employees:");
             employeeEntityDao.findAll(Employee.class)
@@ -269,13 +268,13 @@ public class RemiderHandler {
 
         do {
             System.out.println("List of reminders:");
-            reminderEmployeeEntityDao.findAll(ReminderEmployee.class)
+            reminderEmployeeEntityDao.findAll(EmployeeReminder.class)
                     .forEach(System.out::println);
 
             System.out.println("Podaj id:");
             Long id = Long.parseLong(scanner.next());
 
-            Optional<ReminderEmployee> reminderEmployeeOptional = reminderEmployeeEntityDao.findById(ReminderEmployee.class, id);
+            Optional<EmployeeReminder> reminderEmployeeOptional = reminderEmployeeEntityDao.findById(EmployeeReminder.class, id);
             if (reminderEmployeeOptional.isPresent()) {
                 reminderEmployee = reminderEmployeeOptional.get();
             }
@@ -287,10 +286,10 @@ public class RemiderHandler {
     }
 
     private void showRemider() {
-        EntityDao<ReminderEmployee> entityDao = new EntityDao<>();
+        EntityDao<EmployeeReminder> entityDao = new EntityDao<>();
 
         entityDao
-                .findAll(ReminderEmployee.class)
+                .findAll(EmployeeReminder.class)
                 .stream()
                 .forEach(System.out::println);
     }

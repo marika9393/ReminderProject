@@ -17,10 +17,10 @@ public class CarHandler {
         String command = scanner.nextLine();
 
         CarDao carDao = new CarDao();
-        if (command.equalsIgnoreCase("add")){
-            addCar();
-        } else if (command.equalsIgnoreCase("show")) {
+        if (command.equalsIgnoreCase("list")) {
             showCars();
+        } else if (command.equalsIgnoreCase("add")){
+            addCar();
         } else if (command.equalsIgnoreCase("findby")) {
             findBy(carDao);
         } else if (command.equalsIgnoreCase("delete")) {
@@ -29,37 +29,22 @@ public class CarHandler {
     }
 
     private void printCarCommand() {
-        System.out.println(" - [show]");
-        System.out.println(" - [add]");
-        System.out.println(" - [findby]");
-        System.out.println(" - [delete]");
+        System.out.println("Car - [list]");
+        System.out.println("Car - [add]");
+        System.out.println("Car - [findby]");
+        System.out.println("Car - [delete]");
     }
 
     private void findBy(CarDao carDao) {
-        System.out.println("Enter the phrase which you want to find the car:");
+        System.out.println("Enter the car with you want the find:");
+        System.out.println("id car \n" +
+                "write the mark \n" +
+                "or write the model \n" +
+                "or registration number \n");
         String phrase = scanner.nextLine();
         carDao.findByAny(phrase)
                 .forEach(System.out::println);
     }
-
-//    private void findBy(String[] words) {
-//        Scanner scanner = new Scanner(System.in);
-//        CarDao carDao = new CarDao();
-//        System.out.println("id car \n" +
-//                "mark \n" +
-//                "model \n" +
-//                "registration number \n");
-//        String commandCar = scanner.nextLine();
-//        if (commandCar.equalsIgnoreCase("id")) {
-//            carDao.findByAny(commandCar);
-//        } else if (commandCar.equalsIgnoreCase("mark")) {
-//            carDao.findByAny(commandCar);
-//        } else if (commandCar.equalsIgnoreCase("model")) {
-//            carDao.findByAny(commandCar);
-//        } else if (commandCar.equalsIgnoreCase("registration")) {
-//            carDao.findByAny(commandCar);
-//        }
-//    }
 
 
     private void deleteCar() {

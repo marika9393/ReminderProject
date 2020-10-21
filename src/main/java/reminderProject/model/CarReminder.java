@@ -19,7 +19,7 @@ public class CarReminder {
     private Long idRem;
 
     @Enumerated(value = EnumType.STRING)
-    private ReminderType type;
+    private CarReminderType type;
     private int amount;
 
     private LocalDate date;
@@ -31,7 +31,7 @@ public class CarReminder {
     @EqualsAndHashCode.Exclude
     private Car car;
 
-    public CarReminder(ReminderType type, int amount, LocalDate date, ReminderPeriod period) {
+    public CarReminder(CarReminderType type, int amount, LocalDate date, ReminderPeriod period) {
         this.type = type;
         this.amount = amount;
         this.date = date;

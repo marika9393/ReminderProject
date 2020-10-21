@@ -22,20 +22,20 @@ public class Employee {
     private String surname;
 
     @Enumerated(value = EnumType.STRING)
-    private TypeOfContract typeOfContract;
+    private EmployeeTypeOfContract typeOfContract;
 
     private LocalDate finishContract;
 
     @OneToMany (mappedBy = "employee", fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
-    private List<ReminderEmployee> reminderEmployee;
+    private List<EmployeeReminder> reminderEmployee;
 
     public Employee(String firstName, String surname) {
         this.firstname = firstName;
         this.surname = surname;
     }
 
-    public Employee(String firstName, String surname, TypeOfContract typeOfContract, LocalDate finishContract) {
+    public Employee(String firstName, String surname, EmployeeTypeOfContract typeOfContract, LocalDate finishContract) {
         this.firstname = firstName;
         this.surname = surname;
         this.typeOfContract = typeOfContract;

@@ -2,10 +2,8 @@ package reminderProject.handlers;
 
 import reminderProject.database.EmployeeDao;
 import reminderProject.database.EntityDao;
-import reminderProject.database.ReminderEmployeeDao;
 import reminderProject.model.Employee;
-import reminderProject.model.ReminderEmployee;
-import reminderProject.model.TypeOfContract;
+import reminderProject.model.EmployeeTypeOfContract;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -55,10 +53,10 @@ public class EmployeeHandler {
     }
 
     private static void printEmployeeCommand() {
-        System.out.println("[Employee [list] : ");
-        System.out.println("[Employee [add] : ");
-        System.out.println("[Employee [findby]:");
-        System.out.println("[Employee[delete]");
+        System.out.println("Employee - [list] : ");
+        System.out.println("Employee - [add] : ");
+        System.out.println("Employee - [findby]:");
+        System.out.println("Employee - [delete]");
     }
 
 
@@ -99,7 +97,7 @@ public class EmployeeHandler {
 
         do {
             try {
-                TypeOfContract typeOfContract = TypeOfContract.valueOfShort(scanner.nextLine().trim().toLowerCase());
+                EmployeeTypeOfContract typeOfContract = EmployeeTypeOfContract.valueOfShort(scanner.nextLine().trim().toLowerCase());
 
                 List<Employee> resultEmployeeList = employeeDao.findByTypeOfContract(typeOfContract);
                 error = false;
@@ -177,26 +175,27 @@ public class EmployeeHandler {
                 "2 - umowa o pracę na czas określony \n" +
                 "3 - umowa o pracę na czas nieokreślony \n ");
         int contract = Integer.parseInt(scanner.nextLine());
-        TypeOfContract typeOfContract;
+        EmployeeTypeOfContract typeOfContract;
         switch (contract) {
             case 1:
-                typeOfContract = TypeOfContract.UMOWA_O_PRACE_OKRES_PROBNY;
+                typeOfContract = EmployeeTypeOfContract.UMOWA_O_PRACE_OKRES_PROBNY;
                 break;
             case 2:
-                typeOfContract = TypeOfContract.UMOWA_O_PRACE_NA_CZAS_OKRESLONY;
+                typeOfContract = EmployeeTypeOfContract.UMOWA_O_PRACE_NA_CZAS_OKRESLONY;
                 break;
             case 3:
-                typeOfContract = TypeOfContract.UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY;
+                typeOfContract = EmployeeTypeOfContract.UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY;
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + contract);
         }
 
-        System.out.println("Write date of finish the contract");
+
 
         Employee employee;
 
-        if (typeOfContract != TypeOfContract.UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY) {
+        if (typeOfContract != EmployeeTypeOfContract.UMOWA_O_PRACE_NA_CZAS_NIEOKRESLONY) {
+            System.out.println("Write date of finish the contract");
             System.out.println("Write year");
             int year = Integer.parseInt(scanner.nextLine());
             System.out.println("Write month");

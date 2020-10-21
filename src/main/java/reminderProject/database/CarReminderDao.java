@@ -4,7 +4,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import reminderProject.model.CarReminder;
-import reminderProject.model.ReminderType;
+import reminderProject.model.CarReminderType;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CarReminderDao {
 
-    public List<CarReminder> findByReminder(ReminderType reminderPhrase) {
+    public List<CarReminder> findByReminder(CarReminderType reminderPhrase) {
         List<CarReminder> list = new ArrayList<>();
 
         SessionFactory sessionFactory = HibernateUtil.getOurSessionFactory();

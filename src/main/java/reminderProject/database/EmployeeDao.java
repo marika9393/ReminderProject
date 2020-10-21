@@ -4,7 +4,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import reminderProject.model.Employee;
-import reminderProject.model.TypeOfContract;
+import reminderProject.model.EmployeeTypeOfContract;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -49,7 +49,7 @@ public class EmployeeDao {
         return listBySurname;
     }
 
-    public List<Employee> findByTypeOfContract(TypeOfContract typeOfContract) {
+    public List<Employee> findByTypeOfContract(EmployeeTypeOfContract typeOfContract) {
 
         List<Employee> list = new ArrayList<>();
         SessionFactory sessionFactory = HibernateUtil.getOurSessionFactory();

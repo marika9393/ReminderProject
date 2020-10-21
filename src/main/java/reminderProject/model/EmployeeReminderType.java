@@ -2,7 +2,7 @@ package reminderProject.model;
 
 import java.util.InputMismatchException;
 
-public enum TypeOfReminder {
+public enum EmployeeReminderType {
 
     UBEZPIECZENIE_ZUS("ZUS"),
     WYPLATA("wyplata"),
@@ -13,12 +13,12 @@ public enum TypeOfReminder {
 
     private String skroconaNazwa;
 
-    TypeOfReminder(String skroconaNazwa) {
+    EmployeeReminderType(String skroconaNazwa) {
 
         this.skroconaNazwa = skroconaNazwa;
     }
 
-    public static TypeOfReminder valueOfShortReminder(String skroconaNazwa) {
+    public static EmployeeReminderType valueOfShortReminder(String skroconaNazwa) {
         if (skroconaNazwa.equalsIgnoreCase(UBEZPIECZENIE_ZUS.skroconaNazwa)){
             return UBEZPIECZENIE_ZUS;
         } else if(skroconaNazwa.equalsIgnoreCase(WYPLATA.skroconaNazwa)) {

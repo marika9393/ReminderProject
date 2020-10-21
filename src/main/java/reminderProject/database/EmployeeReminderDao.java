@@ -4,8 +4,8 @@ package reminderProject.database;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import reminderProject.model.ReminderEmployee;
-import reminderProject.model.TypeOfReminder;
+import reminderProject.model.EmployeeReminder;
+import reminderProject.model.EmployeeReminderType;
 
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -15,17 +15,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReminderEmployeeDao {
+public class EmployeeReminderDao {
 
-    public List<ReminderEmployee> findByTypeOfReminder(TypeOfReminder typeOfReminder) {
+    public List<EmployeeReminder> findByTypeOfReminder(EmployeeReminderType typeOfReminder) {
 
-        List<ReminderEmployee> list = new ArrayList<>();
+        List<EmployeeReminder> list = new ArrayList<>();
         SessionFactory sessionFactory = HibernateUtil.getOurSessionFactory();
 
         try (Session session = sessionFactory.openSession()) {
             CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<ReminderEmployee> criteriaQuery = cb.createQuery(ReminderEmployee.class);
-            Root<ReminderEmployee> reminderEmployeeRoot = criteriaQuery.from(ReminderEmployee.class);
+            CriteriaQuery<EmployeeReminder> criteriaQuery = cb.createQuery(EmployeeReminder.class);
+            Root<EmployeeReminder> reminderEmployeeRoot = criteriaQuery.from(EmployeeReminder.class);
             criteriaQuery.select(reminderEmployeeRoot)
                     .where(cb.equal(reminderEmployeeRoot.get("typeOfReminder"), typeOfReminder));
             list.addAll(session.createQuery(criteriaQuery).list());
@@ -35,15 +35,15 @@ public class ReminderEmployeeDao {
         return list;
     }
 
-    public List<ReminderEmployee> findBydateOdReminder (LocalDate date) {
+    public List<EmployeeReminder> findBydateOdReminder (LocalDate date) {
 
-        List<ReminderEmployee> list = new ArrayList<>();
+        List<EmployeeReminder> list = new ArrayList<>();
         SessionFactory sessionFactory = HibernateUtil.getOurSessionFactory();
 
         try (Session session = sessionFactory.openSession()){
             CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<ReminderEmployee> criteriaQuery = cb.createQuery(ReminderEmployee.class);
-            Root<ReminderEmployee> reminderEmployeeRoot = criteriaQuery.from(ReminderEmployee.class);
+            CriteriaQuery<EmployeeReminder> criteriaQuery = cb.createQuery(EmployeeReminder.class);
+            Root<EmployeeReminder> reminderEmployeeRoot = criteriaQuery.from(EmployeeReminder.class);
             criteriaQuery.select(reminderEmployeeRoot)
                     .where(cb.equal(reminderEmployeeRoot.get("dateOfRemider"), date));
             list.addAll(session.createQuery(criteriaQuery).list());

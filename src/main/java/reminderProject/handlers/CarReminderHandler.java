@@ -6,7 +6,7 @@ import reminderProject.database.EntityDao;
 import reminderProject.model.Car;
 import reminderProject.model.CarReminder;
 import reminderProject.model.ReminderPeriod;
-import reminderProject.model.ReminderType;
+import reminderProject.model.CarReminderType;
 
 import java.time.LocalDate;
 import java.util.InputMismatchException;
@@ -25,10 +25,10 @@ public class CarReminderHandler {
         String command = scanner.nextLine();
 
         CarReminderDao carReminderDao = new CarReminderDao();
-        if (command.equalsIgnoreCase("add")) {
-            addCarReminder();
-        } else if (command.equalsIgnoreCase("show")) {
+        if (command.equalsIgnoreCase("list")) {
             showCarReminder();
+        } else if (command.equalsIgnoreCase("add")) {
+            addCarReminder();
         } else if (command.equalsIgnoreCase("findby")) {
             findByCarReminder(carReminderDao);
         } else if (command.equalsIgnoreCase("delete")) {
@@ -37,10 +37,10 @@ public class CarReminderHandler {
     }
 
     private void printReminderCommend() {
-        System.out.println(" - [show]");
-        System.out.println(" - [add]");
-        System.out.println(" - [findby]");
-        System.out.println(" - [delete]");
+        System.out.println("Remider - [list]: ");
+        System.out.println("Reminder - [add]: ");
+        System.out.println("Reminder - [findby]: ");
+        System.out.println("Reminder - [delete]: ");
     }
 
     private void deleteCarReminder() {
@@ -54,15 +54,15 @@ public class CarReminderHandler {
         if (carReminderDelete.isPresent()) {
             CarReminder carReminder = carReminderDelete.get();
             entityDao.delete(carReminder);
-            System.out.println("Car reminder removed. ");
+            System.out.println("Car reminder removed");
         } else {
-            System.out.println("Not found car reminder");
+            System.out.println("Not found reminder to delete");
         }
 
     }
 
     private void findByCarReminder(CarReminderDao carReminderDao) {
-        System.out.println("Enter the phrase which you want to find the car reminder: \n " +
+        System.out.println("Choose type of reminder: \n " +
                 "leasing \n " +
                 "insurance \n " +
                 "review \n " +
@@ -76,13 +76,13 @@ public class CarReminderHandler {
 
         do {
             try {
-                ReminderType reminderType = ReminderType.valueOfShortReminder(scanner.nextLine().toLowerCase());
+                CarReminderType reminderType = CarReminderType.valueOfShortReminder(scanner.nextLine().toLowerCase());
 
                 List<CarReminder> resultReminderList = carReminderDao.findByReminder(reminderType);
                 error = false;
 
                 if (resultReminderList.size() > 0) {
-                    System.out.println("Car reminder found.");
+                    System.out.println("Reminder found.");
                     resultReminderList.forEach(System.out::println);
                 } else
                     System.out.println("Reminder not found");
@@ -106,7 +106,7 @@ public class CarReminderHandler {
 
         EntityDao<CarReminder> carReminderEntityDao = new EntityDao<>();
 
-        System.out.println("Select the type of reminder: \n  +" +
+        System.out.println("Choose type of reminder: \n  +" +
                 "1 -  LEASING,\n" +
                 "2 -  INSURANCE,\n" +
                 "3 -  REVIEW,\n" +
@@ -117,38 +117,38 @@ public class CarReminderHandler {
                 "8 -  THERMOMETER_CALIBRATION");
 
         int reminder = Integer.parseInt(scanner.nextLine());
-        ReminderType reminderType;
+        CarReminderType reminderType;
         switch (reminder) {
             case 1:
-                reminderType = ReminderType.LEASING;
+                reminderType = CarReminderType.LEASING;
                 break;
             case 2:
-                reminderType = ReminderType.INSURANCE;
+                reminderType = CarReminderType.INSURANCE;
                 break;
             case 3:
-                reminderType = ReminderType.REVIEW;
+                reminderType = CarReminderType.REVIEW;
                 break;
             case 4:
-                reminderType = ReminderType.OIL_CHANGE;
+                reminderType = CarReminderType.OIL_CHANGE;
                 break;
             case 5:
-                reminderType = ReminderType.FIRE_EXTINGUISHER_VALIDITY;
+                reminderType = CarReminderType.FIRE_EXTINGUISHER_VALIDITY;
                 break;
             case 6:
-                reminderType = ReminderType.TACHO_LEGALIZATION;
+                reminderType = CarReminderType.TACHO_LEGALIZATION;
                 break;
             case 7:
-                reminderType = ReminderType.CAR_WASH;
+                reminderType = CarReminderType.CAR_WASH;
                 break;
             case 8:
-                reminderType = ReminderType.THERMOMETER_CALIBRATION;
+                reminderType = CarReminderType.THERMOMETER_CALIBRATION;
                 break;
             default:
                 throw new IllegalStateException("Unexpected value" + reminder);
 
         }
 
-        System.out.println("Write amount reminder:");
+        System.out.println("Write amount:");
         int amount = Integer.parseInt(scanner.nextLine());
 
         System.out.println("Write date:");
@@ -159,8 +159,8 @@ public class CarReminderHandler {
         System.out.println("DAY");
         int day = Integer.parseInt(scanner.nextLine());
 
-        System.out.println("Select the period of reminder: \n +" +
-                " 1-- YEAR,\n" +
+        System.out.println("Choose period of reminder: \n +" +
+                " 1 - YEAR,\n" +
                 " 2 - MOUNTH,\n" +
                 " 3 - WEEK,\n" +
                 " 4 - DAY,\n" +
