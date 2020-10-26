@@ -78,14 +78,14 @@ public class EmployeeRemiderHandler {
     }
 
     private void findByDateOfReminder() {
-        System.out.println("Choose date of reminder: ");
+        System.out.println("Write date of reminder: write \n[YEAR] \n[MONTH] \n[DAY] ");
         LocalDate data = LocalDate.of(Integer.parseInt(scanner.nextLine()), Integer.parseInt(scanner.nextLine()), Integer.parseInt(scanner.nextLine()));
 
-        List<EmployeeReminder> resultRemiderList = reminderEmployeeDao.findBydateOdReminder(data);
+        List<EmployeeReminder> resultReminderList = reminderEmployeeDao.findByDateOfReminder(data);
 
-        if (resultRemiderList.stream().findFirst().isPresent()) {
+        if (resultReminderList.stream().findFirst().isPresent()) {
             System.out.println("Reminder found: ");
-            resultRemiderList.forEach(System.out::println);
+            resultReminderList.forEach(System.out::println);
         } else
             System.out.println("Reminder not found");
     }

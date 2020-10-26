@@ -35,7 +35,7 @@ public class EmployeeReminderDao {
         return list;
     }
 
-    public List<EmployeeReminder> findBydateOdReminder (LocalDate date) {
+    public List<EmployeeReminder> findByDateOfReminder(LocalDate date) {
 
         List<EmployeeReminder> list = new ArrayList<>();
         SessionFactory sessionFactory = HibernateUtil.getOurSessionFactory();
@@ -45,11 +45,11 @@ public class EmployeeReminderDao {
             CriteriaQuery<EmployeeReminder> criteriaQuery = cb.createQuery(EmployeeReminder.class);
             Root<EmployeeReminder> reminderEmployeeRoot = criteriaQuery.from(EmployeeReminder.class);
             criteriaQuery.select(reminderEmployeeRoot)
-                    .where(cb.equal(reminderEmployeeRoot.get("dateOfRemider"), date));
+            .where(cb.equal(reminderEmployeeRoot.get("dateOfReminder"), date));
             list.addAll(session.createQuery(criteriaQuery).list());
-        } catch (HibernateException he) {
-            he.printStackTrace();
+} catch (HibernateException he) {
+        he.printStackTrace();
         }
         return list;
-    }
+        }
 }

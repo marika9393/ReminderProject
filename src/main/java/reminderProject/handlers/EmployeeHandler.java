@@ -77,7 +77,7 @@ public class EmployeeHandler {
 
 
     private void findByFinishContract() {
-        System.out.println("Choose employee with the date of finish contract to find: ");
+        System.out.println("Choose employee with the date of finish contract to find: write \n [YEAR] \n [MONTH] \n [DAY] ");
         LocalDate data = LocalDate.of(Integer.parseInt(scanner.nextLine()), Integer.parseInt(scanner.nextLine()), Integer.parseInt(scanner.nextLine()));
 
         List<Employee> resultEmployeeList = employeeDao.findByFinishContract(data);

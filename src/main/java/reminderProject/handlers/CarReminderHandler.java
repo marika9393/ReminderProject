@@ -17,6 +17,7 @@ import java.util.Scanner;
 public class CarReminderHandler {
     private Scanner scanner = new Scanner(System.in);
     private EntityDao<Car> carEntityDao = new EntityDao<>();
+    private EntityDao<CarReminder> reminderCarEntityDao = new EntityDao<>();
     private CarReminderDao carReminderDao = new CarReminderDao();
 
     public void handlerReminder() {
@@ -30,7 +31,15 @@ public class CarReminderHandler {
         } else if (command.equalsIgnoreCase("add")) {
             addCarReminder();
         } else if (command.equalsIgnoreCase("findby")) {
-            findByCarReminder(carReminderDao);
+            System.out.println("type \n" +
+                    "terminate \n");
+            String commandFindBy = scanner.nextLine();
+
+            if (commandFindBy.equalsIgnoreCase("type")) {
+                findByTypeOfCarReminder();
+            } else if (commandFindBy.equalsIgnoreCase("termination")) {
+                findByDateOfReminder();
+            }
         } else if (command.equalsIgnoreCase("delete")) {
             deleteCarReminder();
         }
@@ -61,36 +70,52 @@ public class CarReminderHandler {
 
     }
 
-    private void findByCarReminder(CarReminderDao carReminderDao) {
+    private void findByTypeOfCarReminder() {
         System.out.println("Choose type of reminder: \n " +
-                "leasing \n " +
-                "insurance \n " +
-                "review \n " +
-                "oil \n " +
-                "fire \n " +
-                "tacho \n " +
-                "wash \n " +
-                "calibration");
+                "leasing \n" +
+                "insurance \n" +
+                "review \n" +
+                "oil \n" +
+                "fire \n" +
+                "tacho \n" +
+                "wash \n" +
+                "calibration \n" +
+                "or data: YEAR \n" +
+                "MONTH \n" +
+                "DAY \n");
 
-        boolean error = false;
+        boolean error = true;
 
         do {
             try {
-                CarReminderType reminderType = CarReminderType.valueOfShortReminder(scanner.nextLine().toLowerCase());
+                CarReminderType carReminderType = CarReminderType.valueOfShortReminder(scanner.nextLine());
 
-                List<CarReminder> resultReminderList = carReminderDao.findByReminder(reminderType);
+                List<CarReminder> resultReminderList = carReminderDao.findByReminderType(carReminderType);
                 error = false;
 
-                if (resultReminderList.size() > 0) {
-                    System.out.println("Reminder found.");
+                if ((resultReminderList.stream().findFirst().isPresent())) {
+                    System.out.println("Reminder found: ");
                     resultReminderList.forEach(System.out::println);
                 } else
                     System.out.println("Reminder not found");
             } catch (InputMismatchException e) {
-                System.out.println("Write the correct type ");
+                System.out.println("Write correct typyt: ");
                 scanner.nextLine();
             }
         } while (error);
+    }
+
+    private void findByDateOfReminder() {
+        System.out.println("Write date of reminder: write \n[YEAR] \n[MONTH] \n[DAY] ");
+        LocalDate date = LocalDate.of(Integer.parseInt(scanner.nextLine()), Integer.parseInt(scanner.nextLine()), Integer.parseInt(scanner.nextLine()));
+
+        List<CarReminder> resulReminderList = carReminderDao.findByDateOfReminder(date);
+
+        if (resulReminderList.stream().findFirst().isPresent()) {
+            System.out.println("Reminder found: ");
+            resulReminderList.forEach(System.out::println);
+        } else
+            System.out.println("Reminder not found: ");
     }
 
 
@@ -187,34 +212,41 @@ public class CarReminderHandler {
             default:
                 throw new IllegalStateException("Unexpected value" + period);
         }
+        String input;
+        System.out.println("Do you want add Car? [y/n]");
+        input = scanner.nextLine();
+        if (input.equalsIgnoreCase("y")) {
+            Car car = askUserForCar();
 
-        Car car = askUserForCar();
-
-        CarReminder carReminder = new CarReminder(reminderType, amount, LocalDate.of(year, month, day), reminderPeriod);
-        carReminder.setCar(car);
-        carReminderEntityDao.saveOrUpdate(carReminder);
-
-        System.out.println("Reminder added");
+            CarReminder carReminder = new CarReminder(reminderType, amount, LocalDate.of(year, month, day), reminderPeriod);
+            carReminder.setCar(car);
+            carReminderEntityDao.saveOrUpdate(carReminder);
+            System.out.println("Reminder with car added");
+        } else if (input.equalsIgnoreCase("n")) {
+            CarReminder carReminder = new CarReminder(reminderType, amount, LocalDate.of(year, month, day), reminderPeriod);
+            carReminderEntityDao.saveOrUpdate(carReminder);
+            System.out.println("Reminder added");
+        }
     }
 
-    private Car askUserForCar() {
-        Car car = null;
-        do{
-            System.out.println("This is a list of cars:");
-            carEntityDao
-                    .findAll(Car.class)
-                    .forEach(System.out::println);
-            System.out.println();
-            System.out.println("Provide car id:");
+        private Car askUserForCar () {
+            Car car = null;
+            do {
+                System.out.println("This is a list of cars:");
+                carEntityDao
+                        .findAll(Car.class)
+                        .forEach(System.out::println);
+                System.out.println();
+                System.out.println("Provide car id:");
 
-            Long carId = Long.parseLong(scanner.nextLine());
-            Optional<Car> optionalCar = carEntityDao.findById(Car.class, carId);
-            if(optionalCar.isPresent()){
-                car = optionalCar.get();
-            }
-        }while (car == null);
-        return car;
+                Long carId = Long.parseLong(scanner.nextLine());
+                Optional<Car> optionalCar = carEntityDao.findById(Car.class, carId);
+                if (optionalCar.isPresent()) {
+                    car = optionalCar.get();
+                }
+            } while (car == null);
+            return car;
+        }
+
+
     }
-
-
-}
